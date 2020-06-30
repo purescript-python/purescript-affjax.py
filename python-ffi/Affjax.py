@@ -44,10 +44,7 @@ import threading
 
 # todo - is there an analog for withCredentials here?
 def _ajax(mkHeader, options):
-    print("called ajax")
-
     def _1(errback, callback):
-        print("STARTING")
         if options["responseType"] in ["arraybuffer", "blob", "document"]:
             errback(
                 Exception(
@@ -64,7 +61,7 @@ def _ajax(mkHeader, options):
                 else http.client.HTTPSConnection(parsedUrl.netloc)
             )
             headers = {}
-            if options.username and options.password:
+            if options["username"] and options["password"]:
                 userAndPass = b64encode(b"username:password").decode("ascii")
                 headers["Authorization"] = "Basic %s" % userAndPass
             if options["headers"]:
