@@ -26,7 +26,7 @@ def _ajax(mkHeader, options):
                 userAndPass = b64encode(b"username:password").decode("ascii")
                 headers["Authorization"] = "Basic %s" % userAndPass
             if options["headers"]:
-                for header in headers:
+                for header in options["headers"]:
                     headers[header["field"]] = header["value"]
             try:
                 conn.request(
