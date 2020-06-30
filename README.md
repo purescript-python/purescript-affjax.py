@@ -1,3 +1,3 @@
 # purescript-affjax.py
 
-A port of affjax to purescript-python
+An experimental port of affjax to purescript-python.
