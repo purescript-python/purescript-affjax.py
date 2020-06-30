@@ -1,42 +1,3 @@
-"""
- var platformSpecific = { };
-  if (typeof module !== "undefined" && module.require && !(typeof process !== "undefined" && process.versions["electron"])) {
-    // We are on node.js
-    platformSpecific.newXHR = function () {
-      var XHR = module.require("xhr2");
-      return new XHR();
-    };
-
-    platformSpecific.fixupUrl = function (url, xhr) {
-      if (xhr.nodejsBaseUrl === null) {
-        var urllib = module.require("url");
-        var u = urllib.parse(url);
-        u.protocol = u.protocol || "http:";
-        u.hostname = u.hostname || "localhost";
-        return urllib.format(u);
-      } else {
-        return url || "/";
-      }
-    };
-
-    platformSpecific.getResponse = function (xhr) {
-      return xhr.response;
-    };
-  } else {
-    // We are in the browser
-    platformSpecific.newXHR = function () {
-      return new XMLHttpRequest();
-    };
-
-    platformSpecific.fixupUrl = function (url) {
-      return url || "/";
-    };
-
-    platformSpecific.getResponse = function (xhr) {
-      return xhr.response;
-    };
-  }
-"""
 import http.client
 from urllib.parse import urlparse
 from base64 import b64encode
@@ -75,15 +36,13 @@ def _ajax(mkHeader, options):
                     headers=headers,
                 )
                 r1 = conn.getresponse()
-                print("LOOK HERE")
-                callback(
-                    {
-                        "status": r1.status,
-                        "statusText": r1.reason,
-                        "headers": tuple([mkHeader(k)(v) for k, v in r1.getheaders]),
-                        "body": r1.read().decode("utf-8"),
-                    }
-                )
+                output = {
+                    "status": r1.status,
+                    "statusText": r1.reason,
+                    "headers": tuple([mkHeader(k)(v) for k, v in r1.getheaders()]),
+                    "body": r1.read().decode("utf-8"),
+                }
+                callback(output)
 
             except Exception as e:
                 errback(e)
