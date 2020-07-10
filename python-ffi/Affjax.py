@@ -44,7 +44,7 @@ def _ajax(mkHeader, options):
                 }
                 callback(output)
 
-            except Exception as e:
+            except BaseException as e:
                 errback(e)
                 return
 
